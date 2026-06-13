@@ -4,6 +4,8 @@ import { SPOT_IDS, CURRENT_USER } from '../lib/constants';
 import { rollingDays, formatPolishDate, spotsLabel } from '../lib/dates';
 import { spotStatus, freeCountForDay, validateBooking } from '../store/reservations';
 import { ListItem } from '../components/ListItem';
+import { SectionHeader } from '../components/SectionHeader';
+import { ViewHeader } from '../components/ViewHeader';
 import { ParkingSpotCard } from '../components/ParkingSpotCard';
 import { ParkingSpotDetails } from '../components/ParkingSpotDetails';
 import { Toast } from '../components/Toast';
@@ -73,14 +75,11 @@ export function ReserveView() {
   return (
     <>
       {/* Header: col2–col3, row1 */}
-      <header className="col-span-2 col-start-2 row-start-1 flex flex-col justify-center border-b border-border px-8">
-        <p className="text-xs text-muted">Wybrany dzień</p>
-        <h1 className="text-5xl text-strong">{formatPolishDate(selectedDate)}</h1>
-      </header>
+      <ViewHeader label="Wybrany dzień">{formatPolishDate(selectedDate)}</ViewHeader>
 
       {/* Left aside: col1, row2 */}
       <aside className="col-start-1 row-start-2 overflow-auto border-r border-border">
-        <div className="px-8 py-6 text-xs text-muted">Wybierz dzień</div>
+        <SectionHeader>Wybierz dzień</SectionHeader>
         {days.map((d) => (
           <ListItem
             key={d}
@@ -93,7 +92,8 @@ export function ReserveView() {
       </aside>
 
       {/* Body: col2, row2 */}
-      <main className="col-start-2 row-start-2 overflow-auto">
+      <main className="col-start-2 row-start-2 flex flex-col overflow-auto">
+        <SectionHeader>Wybierz miejsce</SectionHeader>
         <div className="grid grid-cols-5 gap-0 px-8 pt-8">
           {SPOT_IDS.map((id) => {
             const s = spotStatus(reservations, id, selectedDate);
@@ -119,7 +119,7 @@ export function ReserveView() {
 
       {/* Details aside: col3, row2 */}
       <aside className="col-start-3 row-start-2 overflow-auto border-l border-border">
-        <div className="px-8 py-6 text-xs text-muted">Szczegóły</div>
+        <SectionHeader>Szczegóły</SectionHeader>
         <ParkingSpotDetails
           status={detailsStatus}
           spotId={selectedSpotId ?? undefined}
