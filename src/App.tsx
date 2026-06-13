@@ -1,13 +1,7 @@
-import { useState } from 'react';
 import { BookingsProvider } from './store/BookingsProvider';
 import { ReserveView } from './views/ReserveView';
-import { MyReservationsView } from './views/MyReservationsView';
-import { ResetDemo } from './components/ResetDemo';
-
-type Tab = 'reserve' | 'mine';
 
 export default function App() {
-  const [tab, setTab] = useState<Tab>('reserve');
 
   return (
     <BookingsProvider>
@@ -15,27 +9,13 @@ export default function App() {
         {/* col1, row1: brand + nav */}
         <div className="col-start-1 row-start-1 flex flex-col border-r border-b border-border p-8">
           <p className="text-xs text-muted">Tonikowy parking</p>
-          <div className="mt-12 h-12 w-12 rounded-full border border-strong" aria-hidden />
-          <nav className="mt-12 flex gap-4">
-            <button
-              className={`text-xs ${tab === 'reserve' ? 'text-strong' : 'text-muted'}`}
-              onClick={() => setTab('reserve')}
-            >
-              Zarezerwuj
-            </button>
-            <button
-              className={`text-xs ${tab === 'mine' ? 'text-strong' : 'text-muted'}`}
-              onClick={() => setTab('mine')}
-            >
-              Moje rezerwacje
-            </button>
-          </nav>
-          <div className="mt-auto">
-            <ResetDemo />
-          </div>
+          <svg className="mt-12 shrink-0 fill-strong" width="48" height="48" viewBox="0 0 48 48" aria-hidden>
+            <path d="M44.5572 3.43174C41.2205 0.0949886 35.9292 -0.846451 29.6491 0.774254C23.5118 2.35921 17.1243 6.23222 11.6783 11.6902C6.23222 17.1362 2.35921 23.5118 0.774255 29.6491C-0.846451 35.9174 0.0949883 41.2085 3.43174 44.5572C6.76848 47.9059 8.87779 47.9892 12.6555 47.9892C16.4331 47.9892 16.3259 47.7271 18.3399 47.2147C24.4771 45.6298 30.8645 41.7566 36.3106 36.2988C41.7566 30.8527 45.6298 24.4651 47.2265 18.3279C48.8472 12.0596 47.9059 6.76848 44.5692 3.41983L44.5572 3.43174ZM45.8681 17.9943C44.3426 23.8932 40.6008 30.0542 35.3215 35.3215C30.0422 40.5888 23.8932 44.3426 17.9943 45.8681C12.2265 47.3578 7.40009 46.5473 4.43275 43.5682C1.45352 40.5888 0.643169 35.7744 2.13279 30.0065C3.65815 24.1078 7.40009 17.9466 12.6793 12.6793C17.9585 7.41202 24.1078 3.65815 30.0065 2.13279C31.8895 1.64419 33.677 1.40586 35.3335 1.40586C38.7298 1.40586 41.5661 2.43072 43.5682 4.43275C46.5473 7.41202 47.3578 12.2265 45.8681 17.9943Z" />
+            <path d="M35.748 15.9494L34.8185 14.9724L33.8412 13.9478L27.7279 19.7618L24.5938 11.9344L22.0317 12.959L25.1659 20.7864H16.7288V17.248H13.9641V33.9751H16.7288V23.5505H25.3207L22.711 31.7352L23.998 32.1403L25.3565 32.5812L28.014 24.1819L35.748 28.3994L36.3914 27.2081L37.0706 25.969L29.5392 21.8587L35.748 15.9494Z" />
+          </svg>
         </div>
 
-        {tab === 'reserve' ? <ReserveView /> : <MyReservationsView />}
+        <ReserveView />
       </div>
     </BookingsProvider>
   );

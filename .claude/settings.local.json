@@ -40,7 +40,11 @@
       "Bash(sed -n '1,200p')",
       "Bash(mv /tmp/src-orig src)",
       "Bash(rm -rf /tmp/src-orig)",
-      "mcp__claude_ai_Figma__use_figma"
+      "mcp__claude_ai_Figma__use_figma",
+      "Bash(xargs ls -la)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "mcp__claude_ai_Figma__download_assets"
     ]
   }
 }
