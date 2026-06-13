@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-strong: var(--color-stone-900);
+  --color-default: var(--color-stone-700);
+  --color-muted: var(--color-stone-500);
+  --color-on-accent: var(--color-stone-100);
+  --color-on-accent-muted: var(--color-stone-300);
+  --color-surface: var(--color-stone-100);
+  --color-surface-muted: var(--color-stone-200);
+  --color-surface-strong: var(--color-white);
+  --color-accent: var(--color-stone-950);
+  --color-accent-muted: var(--color-stone-900);
+  --color-border: var(--color-stone-200);
+  --color-border-accent: var(--color-stone-950);
+
+  --text-xs: 16px;
+  --text-xs--line-height: 1.4;
+  --text-sm: 20px;
+  --text-sm--line-height: 1.4;
+  --text-4xl--line-height: 1.2;
+  --text-5xl--line-height: 1.1;
+}
+
+html, body, #root { height: 100%; }
+body { background-color: var(--color-surface); color: var(--color-default); }
