@@ -26,7 +26,7 @@ export function ParkingSpotCard({ spotId, state, personName, onClick }: Props) {
   return (
     <button
       onClick={onClick}
-      className={`flex h-full w-full flex-col justify-between border border-border p-6 text-left transition-colors ${baseClass}`}
+      className={`flex h-full w-full flex-col justify-between p-6 text-left transition-colors ${baseClass}`}
       style={state === 'booked' ? HATCH_STYLE : undefined}
     >
       <span className="text-4xl">{spotId}</span>

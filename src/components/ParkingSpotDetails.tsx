@@ -31,8 +31,8 @@ export function ParkingSpotDetails(props: Props) {
   const editable = status === 'available' || status === 'booked-user';
 
   return (
-    <div className="flex h-full flex-col p-8">
-      <div className="flex-1">
+    <div className="flex flex-1 flex-col overflow-hidden px-8 pb-8">
+      <div className="flex-1 overflow-auto">
         {spotId && <InfoField label="Miejsce" value={spotId} readOnly />}
         <InfoField label="Imię" required value={personName} readOnly={!editable} onChange={props.onChangePersonName} />
         <InfoField label="Blachy" required value={plates} readOnly={!editable} onChange={props.onChangePlates} />

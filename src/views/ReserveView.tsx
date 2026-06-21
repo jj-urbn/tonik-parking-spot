@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useBookings } from '../store/BookingsProvider';
 import { SPOT_IDS, CURRENT_USER } from '../lib/constants';
-import { rollingDays, formatPolishDate, spotsLabel } from '../lib/dates';
+import { rollingDays, formatPolishDate, formatPolishDateShort, spotsLabel } from '../lib/dates';
 import { spotStatus, freeCountForDay, validateBooking } from '../store/reservations';
 import { ListItem } from '../components/ListItem';
 import { SectionHeader } from '../components/SectionHeader';
@@ -83,7 +83,7 @@ export function ReserveView() {
         {days.map((d) => (
           <ListItem
             key={d}
-            label={formatPolishDate(d)}
+            label={formatPolishDateShort(d, today)}
             trailing={spotsLabel(freeCountForDay(reservations, d))}
             active={d === selectedDate}
             onSelect={() => selectDay(d)}
@@ -94,7 +94,8 @@ export function ReserveView() {
       {/* Body: col2, row2 */}
       <main className="col-start-2 row-start-2 flex flex-col overflow-auto">
         <SectionHeader>Wybierz miejsce</SectionHeader>
-        <div className="grid grid-cols-5 gap-0 px-8 pt-8">
+        <div className="px-8">
+          <div className="grid grid-cols-5 gap-px bg-border border border-border">
           {SPOT_IDS.map((id) => {
             const s = spotStatus(reservations, id, selectedDate);
             const state =
@@ -114,11 +115,12 @@ export function ReserveView() {
               </div>
             );
           })}
+          </div>
         </div>
       </main>
 
       {/* Details aside: col3, row2 */}
-      <aside className="col-start-3 row-start-2 overflow-auto border-l border-border">
+      <aside className="col-start-3 row-start-2 flex flex-col overflow-hidden border-l border-border">
         <SectionHeader>Szczegóły</SectionHeader>
         <ParkingSpotDetails
           status={detailsStatus}

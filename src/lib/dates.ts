@@ -20,14 +20,23 @@ export function rollingDays(start: Date, count: number): string[] {
   });
 }
 
+const LONG_DATE_FMT = new Intl.DateTimeFormat('pl-PL', { weekday: 'long', day: 'numeric', month: 'long' });
+const SHORT_DATE_FMT = new Intl.DateTimeFormat('pl-PL', { day: 'numeric', month: 'long' });
+const SHORT_WEEKDAY = ['niedz.', 'pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.'];
+
 export function formatPolishDate(iso: string): string {
-  const fmt = new Intl.DateTimeFormat('pl-PL', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  });
-  const s = fmt.format(parseISO(iso));
+  const s = LONG_DATE_FMT.format(parseISO(iso));
   return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+export function formatPolishDateShort(iso: string, today: Date): string {
+  const todayISO = toISODate(today);
+  if (iso === todayISO) return 'Dzisiaj';
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  if (iso === toISODate(tomorrow)) return 'Jutro';
+  const d = parseISO(iso);
+  return `${SHORT_WEEKDAY[d.getDay()]} ${SHORT_DATE_FMT.format(d)}`;
 }
 
 // Polish quantity plural: returns 'one' | 'few' | 'many'
