@@ -8,6 +8,7 @@ import { ViewHeader } from '../components/ViewHeader';
 import { ParkingSpotCard } from '../components/ParkingSpotCard';
 import { ParkingSpotDetails } from '../components/ParkingSpotDetails';
 import { AlertDialog } from '../components/AlertDialog';
+import { TabSwitcher, type Tab } from '../components/TabSwitcher';
 
 const PERIODS: { key: Period; label: string }[] = [
   { key: 'all', label: 'Od początku' },
@@ -16,7 +17,7 @@ const PERIODS: { key: Period; label: string }[] = [
   { key: 'year', label: 'Ten rok' },
 ];
 
-export function MyReservationsView() {
+export function MyReservationsView({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
   const { reservations, today, edit, remove } = useBookings();
   const [period, setPeriod] = useState<Period>('week');
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -60,7 +61,7 @@ export function MyReservationsView() {
 
       {/* Left aside: col1, row2 */}
       <aside className="col-start-1 row-start-2 overflow-auto border-r border-border">
-        <SectionHeader>Moje rezerwacje</SectionHeader>
+        <TabSwitcher active="mine" onChange={onNavigate} />
         {PERIODS.map((p) => (
           <ListItem
             key={p.key}

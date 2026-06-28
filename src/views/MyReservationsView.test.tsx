@@ -6,7 +6,7 @@ import { MyReservationsView } from './MyReservationsView';
 function renderView() {
   return render(
     <BookingsProvider>
-      <MyReservationsView />
+      <MyReservationsView onNavigate={() => {}} />
     </BookingsProvider>,
   );
 }

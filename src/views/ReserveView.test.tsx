@@ -6,7 +6,7 @@ import { ReserveView } from './ReserveView';
 function renderView() {
   return render(
     <BookingsProvider>
-      <ReserveView />
+      <ReserveView onNavigate={() => {}} />
     </BookingsProvider>,
   );
 }
@@ -23,7 +23,8 @@ describe('ReserveView', () => {
   it('selecting a free spot reveals the booking form with a disabled button until plates entered', () => {
     renderView();
     fireEvent.click(screen.getByText('07'));
-    const button = screen.getByRole('button', { name: 'Zarezerwuj' });
+    const buttons = screen.getAllByRole('button', { name: 'Zarezerwuj' });
+    const button = buttons.at(-1)!;
     expect(button).toBeDisabled();
     fireEvent.change(screen.getByLabelText('Blachy'), { target: { value: 'NEW123' } });
     expect(button).toBeEnabled();
@@ -33,7 +34,7 @@ describe('ReserveView', () => {
     renderView();
     fireEvent.click(screen.getByText('07'));
     fireEvent.change(screen.getByLabelText('Blachy'), { target: { value: 'NEW123' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Zarezerwuj' }));
+    fireEvent.click(screen.getAllByRole('button', { name: 'Zarezerwuj' }).at(-1)!);
     expect(screen.getByText('Rezerwacja potwierdzona')).toBeInTheDocument();
   });
 });
