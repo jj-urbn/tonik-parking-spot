@@ -16,6 +16,8 @@ npm test             # vitest run (one-shot, CI mode)
 npm run test:watch   # vitest in watch mode
 ```
 
+`npm run lint` reports 5 pre-existing problems (2 errors, 3 warnings) unrelated to any current change (react-refresh in `BookingsProvider`, ref-in-render in `Toast`, Tailwind class-order). Don't assume you introduced them — `git stash` and re-run to confirm.
+
 Run a single test file or filter by name:
 
 ```bash
@@ -39,7 +41,8 @@ The app is deliberately split into **pure logic** and **React shell** so the cor
 ### Key domain concepts
 
 - A `Reservation` distinguishes **`bookedBy`** (creator = `CURRENT_USER` at creation, immutable) from **`personName`** (occupant, editable — supports booking on behalf of a guest). Ownership checks (can edit/delete) compare `bookedBy === CURRENT_USER`, surfaced via `SpotStatus.byCurrentUser`.
-- `App.tsx` is a top-level tab switch (`reserve` | `mine`) wrapped in `BookingsProvider`. Layout is a fixed CSS grid (`grid-cols-[302px_1fr_302px] grid-rows-[196px_1fr]`); views place themselves into named grid cells with `col-start-*`/`row-start-*`.
+- `App.tsx` owns `tab` (`reserve` | `mine`) state and passes `onNavigate` to the active view; it is wrapped in `BookingsProvider`. The switch UI is the `TabSwitcher` component rendered in each view's **left-aside header** (replacing the section header there), not the brand column. Layout is a fixed CSS grid (`grid-cols-[302px_1fr_302px] grid-rows-[196px_1fr]`); views place themselves into named grid cells with `col-start-*`/`row-start-*`.
+- **Past bookings are read-only.** `isPast(iso, today)` in `lib/dates.ts` (strict `date < today`; today is editable). In `MyReservationsView`, a past booking is locked by passing the existing `'booked'` details status to `ParkingSpotDetails` (read-only, no buttons) — no new prop added.
 
 ## Styling
 
@@ -50,6 +53,8 @@ Detailed clean/native Tailwind conventions (tokens, class minimalism, ordering, 
 ## Testing
 
 Vitest + jsdom + Testing Library. `src/test-setup.ts` polyfills a full in-memory `localStorage` (Node's native one is incomplete). Pure logic in `lib/` and `store/` is tested directly; components and views are tested through rendered behavior.
+
+To test empty/custom data, pre-seed `localStorage.setItem(STORAGE_KEY, '[]')` (from `store/storage`) before rendering — otherwise the provider loads seed data. Seed facts (relative to `today`): spot `09` = today, `02` = today−10, `03` = Jan 15, all by `CURRENT_USER`. Gotcha: `ReserveView`'s booking submit button and the `Zarezerwuj` tab share a label, so scope queries to the details panel via `within(screen.getByRole('complementary', { name: 'Szczegóły' }))`.
 
 ## Reference docs
 
