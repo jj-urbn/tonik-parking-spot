@@ -6,6 +6,7 @@ import {
   spotsLabel,
   reservationsLabel,
   isInPeriod,
+  isPast,
 } from './dates';
 
 describe('toISODate', () => {
@@ -67,5 +68,19 @@ describe('isInPeriod', () => {
   it('year includes same calendar year', () => {
     expect(isInPeriod('2026-01-01', 'year', today)).toBe(true);
     expect(isInPeriod('2025-12-31', 'year', today)).toBe(false);
+  });
+});
+
+describe('isPast', () => {
+  const today = new Date(2026, 5, 28); // 2026-06-28
+  it('is true for a date before today', () => {
+    expect(isPast('2026-06-27', today)).toBe(true);
+    expect(isPast('2025-12-31', today)).toBe(true);
+  });
+  it('is false for today', () => {
+    expect(isPast('2026-06-28', today)).toBe(false);
+  });
+  it('is false for a future date', () => {
+    expect(isPast('2026-06-29', today)).toBe(false);
   });
 });

@@ -90,3 +90,7 @@ export function isInPeriod(iso: string, period: Period, today: Date): boolean {
   // week
   return isoWeekKey(d) === isoWeekKey(today);
 }
+
+export function isPast(iso: string, today: Date): boolean {
+  return iso < toISODate(today);
+}
