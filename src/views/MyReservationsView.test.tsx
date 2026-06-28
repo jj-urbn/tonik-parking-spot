@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BookingsProvider } from '../store/BookingsProvider';
 import { MyReservationsView } from './MyReservationsView';
+import { STORAGE_KEY } from '../store/storage';
 
 function renderView() {
   return render(
@@ -39,5 +40,19 @@ describe('MyReservationsView', () => {
     const dialogConfirm = screen.getAllByRole('button', { name: 'Usuń' }).at(-1)!;
     fireEvent.click(dialogConfirm);
     expect(screen.queryByText('09')).toBeNull();
+  });
+
+  it('renders a past booking as read-only (no Zapisz/Usuń)', () => {
+    renderView();
+    fireEvent.click(screen.getByText('Ten miesiąc')); // includes the past spot 02
+    fireEvent.click(screen.getByText('02'));
+    expect(screen.queryByRole('button', { name: 'Zapisz' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Usuń' })).toBeNull();
+  });
+
+  it('shows an empty state when the period has no reservations', () => {
+    localStorage.setItem(STORAGE_KEY, '[]');
+    renderView();
+    expect(screen.getByText('Brak rezerwacji w tym okresie')).toBeInTheDocument();
   });
 });
