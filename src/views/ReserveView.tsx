@@ -121,7 +121,7 @@ export function ReserveView({ onNavigate }: { onNavigate: (tab: Tab) => void }) 
       </main>
 
       {/* Details aside: col3, row2 */}
-      <aside className="col-start-3 row-start-2 flex flex-col overflow-hidden border-l border-border">
+      <aside aria-label="Szczegóły" className="col-start-3 row-start-2 flex flex-col overflow-hidden border-l border-border">
         <SectionHeader>Szczegóły</SectionHeader>
         <ParkingSpotDetails
           status={detailsStatus}

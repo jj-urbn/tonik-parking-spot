@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import { BookingsProvider } from '../store/BookingsProvider';
 import { ReserveView } from './ReserveView';
 
@@ -9,6 +9,10 @@ function renderView() {
       <ReserveView onNavigate={() => {}} />
     </BookingsProvider>,
   );
+}
+
+function detailsPanel() {
+  return within(screen.getByRole('complementary', { name: 'Szczegóły' }));
 }
 
 describe('ReserveView', () => {
@@ -23,8 +27,7 @@ describe('ReserveView', () => {
   it('selecting a free spot reveals the booking form with a disabled button until plates entered', () => {
     renderView();
     fireEvent.click(screen.getByText('07'));
-    const buttons = screen.getAllByRole('button', { name: 'Zarezerwuj' });
-    const button = buttons.at(-1)!;
+    const button = detailsPanel().getByRole('button', { name: 'Zarezerwuj' });
     expect(button).toBeDisabled();
     fireEvent.change(screen.getByLabelText('Blachy'), { target: { value: 'NEW123' } });
     expect(button).toBeEnabled();
@@ -34,7 +37,7 @@ describe('ReserveView', () => {
     renderView();
     fireEvent.click(screen.getByText('07'));
     fireEvent.change(screen.getByLabelText('Blachy'), { target: { value: 'NEW123' } });
-    fireEvent.click(screen.getAllByRole('button', { name: 'Zarezerwuj' }).at(-1)!);
+    fireEvent.click(detailsPanel().getByRole('button', { name: 'Zarezerwuj' }));
     expect(screen.getByText('Rezerwacja potwierdzona')).toBeInTheDocument();
   });
 });
