@@ -111,7 +111,7 @@ export function MyReservationsView({ onNavigate }: { onNavigate: (tab: Tab) => v
       </main>
 
       {/* Details aside: col3, row2 */}
-      <aside className="col-start-3 row-start-2 overflow-auto border-l border-border">
+      <aside aria-label="Szczegóły" className="col-start-3 row-start-2 overflow-auto border-l border-border">
         <SectionHeader>Szczegóły</SectionHeader>
         <ParkingSpotDetails
           status={detailsStatus}
