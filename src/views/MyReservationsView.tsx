@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useBookings } from '../store/BookingsProvider';
+import { useBookings } from '../store/useBookings';
 import { formatPolishDate, reservationsLabel, isPast, type Period } from '../lib/dates';
 import { filterReservations, validateBooking } from '../store/reservations';
 import { ListItem } from '../components/ListItem';

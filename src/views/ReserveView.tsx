@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useBookings } from '../store/BookingsProvider';
+import { useBookings } from '../store/useBookings';
 import { SPOT_IDS, CURRENT_USER } from '../lib/constants';
 import { rollingDays, formatPolishDate, formatPolishDateShort, spotsLabel } from '../lib/dates';
 import { spotStatus, freeCountForDay, validateBooking } from '../store/reservations';

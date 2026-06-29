@@ -1,4 +1,4 @@
-import { useBookings } from '../store/BookingsProvider';
+import { useBookings } from '../store/useBookings';
 
 export function ResetDemo() {
   const { resetDemo } = useBookings();

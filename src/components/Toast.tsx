@@ -11,7 +11,9 @@ type Props = {
 
 export function Toast({ open, title, body, onDismiss }: Props) {
   const onDismissRef = useRef(onDismiss);
-  onDismissRef.current = onDismiss;
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  });
 
   useEffect(() => {
     if (!open) return;
