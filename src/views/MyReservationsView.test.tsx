@@ -44,7 +44,7 @@ describe('MyReservationsView', () => {
 
   it('renders a past booking as read-only (no Zapisz/Usuń)', () => {
     renderView();
-    fireEvent.click(screen.getByText('Ten miesiąc')); // includes the past spot 02
+    fireEvent.click(screen.getByText('Od początku')); // always includes past spot 02
     fireEvent.click(screen.getByText('02'));
     expect(screen.queryByRole('button', { name: 'Zapisz' })).toBeNull();
     expect(screen.queryByRole('button', { name: 'Usuń' })).toBeNull();

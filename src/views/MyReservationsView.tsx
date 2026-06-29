@@ -95,7 +95,7 @@ export function MyReservationsView({ onNavigate }: { onNavigate: (tab: Tab) => v
               <SectionHeader>{formatPolishDate(date)}</SectionHeader>
               <div className="flex flex-col gap-2 px-8 pb-8">
                 {items.map((r) => (
-                  <div key={r.id} className="h-[216px]">
+                  <div key={r.id} className="h-spot-card">
                     <ParkingSpotCard
                       spotId={r.spotId}
                       state={selectedId === r.id ? 'selected' : 'booked'}

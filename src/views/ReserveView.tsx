@@ -106,7 +106,7 @@ export function ReserveView({ onNavigate }: { onNavigate: (tab: Tab) => void }) 
                   ? 'booked'
                   : 'free';
             return (
-              <div key={id} className="h-[216px]">
+              <div key={id} className="h-spot-card">
                 <ParkingSpotCard
                   spotId={id}
                   state={state}
