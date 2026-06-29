@@ -3,6 +3,7 @@ import { BookingsProvider } from './store/BookingsProvider';
 import { ReserveView } from './views/ReserveView';
 import { MyReservationsView } from './views/MyReservationsView';
 import type { Tab } from './components/TabSwitcher';
+import { DevPanel } from './components/DevPanel';
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('reserve');
@@ -25,6 +26,7 @@ export default function App() {
           <MyReservationsView onNavigate={setTab} />
         )}
       </div>
+      {import.meta.env.DEV && <DevPanel />}
     </BookingsProvider>
   );
 }

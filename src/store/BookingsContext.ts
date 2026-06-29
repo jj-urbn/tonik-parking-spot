@@ -9,6 +9,7 @@ export type BookingsContextValue = {
   edit: (id: string, patch: Partial<Pick<Reservation, 'personName' | 'plates' | 'note'>>) => void;
   remove: (id: string) => void;
   resetDemo: () => void;
+  clearAll: () => void;
 };
 
 export const BookingsContext = createContext<BookingsContextValue | null>(null);
