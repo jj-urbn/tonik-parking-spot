@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react';
+import { exitTransition, spring } from '../lib/motion';
 import { Button } from './Button';
 
 type Props = {
@@ -19,15 +20,15 @@ export function AlertDialog({ open, title, body, confirmLabel, cancelLabel, onCo
           className="fixed inset-0 z-50 flex items-center justify-center bg-strong/40"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.15, ease: 'easeIn' } }}
+          exit={{ opacity: 0, transition: exitTransition }}
           transition={{ duration: 0.2 }}
         >
           <motion.div
             className="w-[400px] bg-surface p-8"
             initial={{ scale: 0.85, y: 20, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.92, opacity: 0, transition: { duration: 0.15, ease: 'easeIn' } }}
-            transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+            exit={{ scale: 0.92, opacity: 0, transition: exitTransition }}
+            transition={spring}
           >
             <p className="text-sm text-strong">{title}</p>
             <p className="mt-2 text-xs text-muted">{body}</p>
