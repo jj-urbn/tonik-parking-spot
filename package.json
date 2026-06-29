@@ -11,7 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "postinstall": "patch-package",
-    "prepare": "git config core.hooksPath .githooks"
+    "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
     "motion": "^12.42.0",
