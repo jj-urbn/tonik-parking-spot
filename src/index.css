@@ -20,6 +20,8 @@
   --text-sm--line-height: 1.4;
   --text-4xl--line-height: 1.2;
   --text-5xl--line-height: 1.1;
+
+  --spacing-spot-card: 216px;
 }
 
 html, body, #root { height: 100%; }

@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, act } from '@testing-library/react';
-import { BookingsProvider, useBookings } from './BookingsProvider';
+import { BookingsProvider } from './BookingsProvider';
+import { useBookings } from './useBookings';
 import { STORAGE_KEY } from './storage';
 
 function Probe() {

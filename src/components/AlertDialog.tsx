@@ -1,3 +1,5 @@
+import { AnimatePresence, motion } from 'motion/react';
+import { backdropTransition, exitTransition, spring } from '../lib/motion';
 import { Button } from './Button';
 
 type Props = {
@@ -11,17 +13,32 @@ type Props = {
 };
 
 export function AlertDialog({ open, title, body, confirmLabel, cancelLabel, onConfirm, onCancel }: Props) {
-  if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-strong/40">
-      <div className="w-[400px] bg-surface p-8">
-        <p className="text-sm text-strong">{title}</p>
-        <p className="mt-2 text-xs text-muted">{body}</p>
-        <div className="mt-6 flex justify-end gap-3">
-          <Button variant="secondary" onClick={onCancel}>{cancelLabel}</Button>
-          <Button variant="primary" onClick={onConfirm}>{confirmLabel}</Button>
-        </div>
-      </div>
-    </div>
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-strong/40"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: exitTransition }}
+          transition={backdropTransition}
+        >
+          <motion.div
+            className="w-[400px] bg-surface p-8"
+            initial={{ scale: 0.85, y: 20, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.92, opacity: 0, transition: exitTransition }}
+            transition={spring}
+          >
+            <p className="text-sm text-strong">{title}</p>
+            <p className="mt-2 text-xs text-muted">{body}</p>
+            <div className="mt-6 flex justify-end gap-3">
+              <Button variant="secondary" onClick={onCancel}>{cancelLabel}</Button>
+              <Button variant="primary" onClick={onConfirm}>{confirmLabel}</Button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

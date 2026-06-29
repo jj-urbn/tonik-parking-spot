@@ -16,7 +16,7 @@ npm test             # vitest run (one-shot, CI mode)
 npm run test:watch   # vitest in watch mode
 ```
 
-`npm run lint` reports 5 pre-existing problems (2 errors, 3 warnings) unrelated to any current change (react-refresh in `BookingsProvider`, ref-in-render in `Toast`, Tailwind class-order). Don't assume you introduced them — `git stash` and re-run to confirm.
+`npm run lint` reports 3 pre-existing warnings (Tailwind class-order in `SectionHeader`, `ViewHeader`, `ReserveView`) — no errors. Don't assume you introduced them — `git stash` and re-run to confirm.
 
 Run a single test file or filter by name:
 
@@ -30,7 +30,9 @@ npx vitest run -t "freeCountForDay"
 The app is deliberately split into **pure logic** and **React shell** so the core booking rules are unit-testable without rendering.
 
 - **`src/store/reservations.ts`** — the heart of the domain. Pure, side-effect-free functions over a `Reservation[]` array: `spotStatus`, `freeCountForDay`, `addReservation`, `updateReservation`, `deleteReservation`, `validateBooking`, etc. These take state in and return new state out; they never touch React or storage. **Put booking rules here, not in components.**
-- **`src/store/BookingsProvider.tsx`** — the only stateful owner. Holds `reservations` in `useState`, persists every change to `localStorage` via a `useEffect`, and exposes `book/edit/remove/resetDemo` plus `today` through the `useBookings()` context hook. The action methods are thin wrappers that call the pure functions in `reservations.ts`.
+- **`src/store/BookingsProvider.tsx`** — the only stateful owner. Holds `reservations` in `useState`, persists every change to `localStorage` via a `useEffect`, and exposes `book/edit/remove/resetDemo` plus `today` through the context. The action methods are thin wrappers that call the pure functions in `reservations.ts`.
+- **`src/store/BookingsContext.ts`** — the context type (`BookingsContextValue`) and `BookingsContext` itself.
+- **`src/store/useBookings.ts`** — the `useBookings()` hook; import from here in components and views.
 - **`src/store/storage.ts`** — `localStorage` load/save under key `tonik-parking:reservations:v1`. On missing/corrupt data it falls back to seed data and re-saves.
 - **`src/lib/seed.ts`** — deterministic seed (no `Math.random`, dates derived from `today`) so tests and the "Reset demo" button are reproducible.
 - **`src/lib/dates.ts`** — date helpers and **Polish-language formatting** (`formatPolishDate`, `spotsLabel`, `reservationsLabel` with correct one/few/many plural forms) and period filtering (`week`/`month`/`year`/`all`).
