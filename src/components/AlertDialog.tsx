@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react';
-import { exitTransition, spring } from '../lib/motion';
+import { backdropTransition, exitTransition, spring } from '../lib/motion';
 import { Button } from './Button';
 
 type Props = {
@@ -21,7 +21,7 @@ export function AlertDialog({ open, title, body, confirmLabel, cancelLabel, onCo
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: exitTransition }}
-          transition={{ duration: 0.2 }}
+          transition={backdropTransition}
         >
           <motion.div
             className="w-[400px] bg-surface p-8"
