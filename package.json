@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "motion": "^12.42.0",
