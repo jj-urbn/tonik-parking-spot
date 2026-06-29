@@ -1,12 +1,16 @@
+import { useState } from 'react';
 import { BookingsProvider } from './store/BookingsProvider';
 import { ReserveView } from './views/ReserveView';
+import { MyReservationsView } from './views/MyReservationsView';
+import type { Tab } from './components/TabSwitcher';
 
 export default function App() {
+  const [tab, setTab] = useState<Tab>('reserve');
 
   return (
     <BookingsProvider>
       <div className="grid h-full grid-cols-[302px_1fr_302px] grid-rows-[196px_1fr]">
-        {/* col1, row1: brand + nav */}
+        {/* col1, row1: brand + logo */}
         <div className="col-start-1 row-start-1 flex flex-col border-r border-b border-border p-8">
           <p className="text-xs text-muted">Tonikowy parking</p>
           <svg className="mt-12 shrink-0 fill-strong" width="48" height="48" viewBox="0 0 48 48" aria-hidden>
@@ -15,7 +19,11 @@ export default function App() {
           </svg>
         </div>
 
-        <ReserveView />
+        {tab === 'reserve' ? (
+          <ReserveView onNavigate={setTab} />
+        ) : (
+          <MyReservationsView onNavigate={setTab} />
+        )}
       </div>
     </BookingsProvider>
   );

@@ -10,8 +10,9 @@ import { ParkingSpotCard } from '../components/ParkingSpotCard';
 import { ParkingSpotDetails } from '../components/ParkingSpotDetails';
 import { Toast } from '../components/Toast';
 import { AlertDialog } from '../components/AlertDialog';
+import { TabSwitcher, type Tab } from '../components/TabSwitcher';
 
-export function ReserveView() {
+export function ReserveView({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
   const { reservations, today, book, edit, remove } = useBookings();
   const days = useMemo(() => rollingDays(today, 8), [today]);
 
@@ -79,7 +80,7 @@ export function ReserveView() {
 
       {/* Left aside: col1, row2 */}
       <aside className="col-start-1 row-start-2 overflow-auto border-r border-border">
-        <SectionHeader>Wybierz dzień</SectionHeader>
+        <TabSwitcher active="reserve" onChange={onNavigate} />
         {days.map((d) => (
           <ListItem
             key={d}
@@ -120,7 +121,7 @@ export function ReserveView() {
       </main>
 
       {/* Details aside: col3, row2 */}
-      <aside className="col-start-3 row-start-2 flex flex-col overflow-hidden border-l border-border">
+      <aside aria-label="Szczegóły" className="col-start-3 row-start-2 flex flex-col overflow-hidden border-l border-border">
         <SectionHeader>Szczegóły</SectionHeader>
         <ParkingSpotDetails
           status={detailsStatus}

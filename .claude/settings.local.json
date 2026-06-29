@@ -44,7 +44,8 @@
       "Bash(xargs ls -la)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "mcp__claude_ai_Figma__download_assets"
+      "mcp__claude_ai_Figma__download_assets",
+      "Bash(gh pr *)"
     ]
   }
 }
