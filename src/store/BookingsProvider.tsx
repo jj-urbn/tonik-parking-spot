@@ -26,6 +26,7 @@ export function BookingsProvider({ children }: { children: ReactNode }) {
     edit: (id, patch) => setReservations((rs) => updateReservation(rs, id, patch)),
     remove: (id) => setReservations((rs) => deleteReservation(rs, id)),
     resetDemo: () => setReservations(makeSeedData(today)),
+    clearAll: () => setReservations([]),
   };
 
   return <BookingsContext.Provider value={value}>{children}</BookingsContext.Provider>;
