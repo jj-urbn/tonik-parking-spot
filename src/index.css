@@ -13,8 +13,11 @@
   --color-accent-muted: var(--color-stone-900);
   --color-border: var(--color-stone-200);
   --color-border-accent: var(--color-stone-950);
+  --color-error: #c10008;
 
-  --text-xs: 16px;
+  --text-2xs: 12px;
+  --text-2xs--line-height: 1.4;
+  --text-xs: 15px;
   --text-xs--line-height: 1.4;
   --text-sm: 20px;
   --text-sm--line-height: 1.4;

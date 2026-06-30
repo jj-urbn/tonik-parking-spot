@@ -9,7 +9,7 @@ type Props = { active: Tab; onChange: (tab: Tab) => void };
 
 export function TabSwitcher({ active, onChange }: Props) {
   return (
-    <div className="flex shrink-0 items-center gap-4 p-8 text-xs">
+    <div className="sticky top-0 z-10 flex shrink-0 items-center gap-4 bg-surface p-8 text-xs">
       {TABS.map((t) => (
         <button
           key={t.key}

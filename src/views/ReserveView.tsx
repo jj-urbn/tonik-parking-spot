@@ -14,7 +14,12 @@ import { TabSwitcher, type Tab } from '../components/TabSwitcher';
 
 export function ReserveView({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
   const { reservations, today, book, edit, remove } = useBookings();
-  const days = useMemo(() => rollingDays(today, 8), [today]);
+  const days = useMemo(() => rollingDays(today, 30), [today]);
+
+  const freeCountByDay = useMemo(
+    () => Object.fromEntries(days.map((d) => [d, freeCountForDay(reservations, d)])),
+    [reservations, days],
+  );
 
   const [selectedDate, setSelectedDate] = useState(days[0]);
   const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
@@ -22,9 +27,15 @@ export function ReserveView({ onNavigate }: { onNavigate: (tab: Tab) => void }) 
   const [plates, setPlates] = useState('');
   const [note, setNote] = useState('');
   const [toastOpen, setToastOpen] = useState(false);
+  const [deleteToastOpen, setDeleteToastOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  const status = selectedSpotId ? spotStatus(reservations, selectedSpotId, selectedDate) : null;
+  const spotStatusMap = useMemo(
+    () => Object.fromEntries(SPOT_IDS.map((id) => [id, spotStatus(reservations, id, selectedDate)])),
+    [reservations, selectedDate],
+  );
+
+  const status = selectedSpotId ? spotStatusMap[selectedSpotId] : null;
 
   function selectDay(date: string) {
     setSelectedDate(date);
@@ -34,13 +45,13 @@ export function ReserveView({ onNavigate }: { onNavigate: (tab: Tab) => void }) 
 
   function selectSpot(spotId: string) {
     setSelectedSpotId(spotId);
-    const s = spotStatus(reservations, spotId, selectedDate);
+    const s = spotStatusMap[spotId];
     if (s.kind === 'booked') {
       setPersonName(s.reservation.personName);
       setPlates(s.reservation.plates);
       setNote(s.reservation.note);
     } else {
-      setPersonName(CURRENT_USER);
+      setPersonName('');
       setPlates('');
       setNote('');
     }
@@ -85,7 +96,7 @@ export function ReserveView({ onNavigate }: { onNavigate: (tab: Tab) => void }) 
           <ListItem
             key={d}
             label={formatPolishDateShort(d, today)}
-            trailing={spotsLabel(freeCountForDay(reservations, d))}
+            trailing={spotsLabel(freeCountByDay[d])}
             active={d === selectedDate}
             onSelect={() => selectDay(d)}
           />
@@ -98,7 +109,7 @@ export function ReserveView({ onNavigate }: { onNavigate: (tab: Tab) => void }) 
         <div className="px-8">
           <div className="grid grid-cols-5 gap-px bg-border border border-border">
           {SPOT_IDS.map((id) => {
-            const s = spotStatus(reservations, id, selectedDate);
+            const s = spotStatusMap[id];
             const state =
               selectedSpotId === id
                 ? 'selected'
@@ -145,18 +156,25 @@ export function ReserveView({ onNavigate }: { onNavigate: (tab: Tab) => void }) 
         body="Twoja rezerwacja została zapisana i jest widoczna dla innych"
         onDismiss={() => setToastOpen(false)}
       />
+      <Toast
+        open={deleteToastOpen}
+        title="Miejsce zwolnione"
+        body="Twoja rezerwacja została usunięta. Miejsce jest teraz dostępne dla innych."
+        onDismiss={() => setDeleteToastOpen(false)}
+      />
 
       <AlertDialog
         open={confirmDelete}
-        title="Usunąć rezerwację?"
-        body="Tej operacji nie można cofnąć."
-        confirmLabel="Usuń"
+        title="Usunąć tę rezerwację?"
+        body="Miejsce zostanie zwolnione i będzie dostępne dla innych kierowców."
+        confirmLabel="Usuń rezerwację"
         cancelLabel="Anuluj"
         onCancel={() => setConfirmDelete(false)}
         onConfirm={() => {
           if (status?.kind === 'booked') remove(status.reservation.id);
           setConfirmDelete(false);
           clearSelection();
+          setDeleteToastOpen(true);
         }}
       />
     </>

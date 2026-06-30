@@ -8,6 +8,7 @@ import { ViewHeader } from '../components/ViewHeader';
 import { ParkingSpotCard } from '../components/ParkingSpotCard';
 import { ParkingSpotDetails } from '../components/ParkingSpotDetails';
 import { AlertDialog } from '../components/AlertDialog';
+import { Toast } from '../components/Toast';
 import { TabSwitcher, type Tab } from '../components/TabSwitcher';
 
 const PERIODS: { key: Period; label: string }[] = [
@@ -25,6 +26,7 @@ export function MyReservationsView({ onNavigate }: { onNavigate: (tab: Tab) => v
   const [plates, setPlates] = useState('');
   const [note, setNote] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteToastOpen, setDeleteToastOpen] = useState(false);
 
   const list = useMemo(
     () => filterReservations(reservations, period, today).slice().sort((a, b) => b.date.localeCompare(a.date)),
@@ -50,6 +52,12 @@ export function MyReservationsView({ onNavigate }: { onNavigate: (tab: Tab) => v
       : 'booked-user';
 
   const activePeriodLabel = PERIODS.find((p) => p.key === period)?.label ?? '';
+
+  function clearForm() {
+    setPersonName('');
+    setPlates('');
+    setNote('');
+  }
 
   function select(id: string) {
     const r = reservations.find((x) => x.id === id);
@@ -77,9 +85,7 @@ export function MyReservationsView({ onNavigate }: { onNavigate: (tab: Tab) => v
             onSelect={() => {
               setPeriod(p.key);
               setSelectedId(null);
-              setPersonName('');
-              setPlates('');
-              setNote('');
+              clearForm();
             }}
           />
         ))}
@@ -111,7 +117,7 @@ export function MyReservationsView({ onNavigate }: { onNavigate: (tab: Tab) => v
       </main>
 
       {/* Details aside: col3, row2 */}
-      <aside aria-label="Szczegóły" className="col-start-3 row-start-2 overflow-auto border-l border-border">
+      <aside aria-label="Szczegóły" className="col-start-3 row-start-2 flex flex-col overflow-hidden border-l border-border">
         <SectionHeader>Szczegóły</SectionHeader>
         <ParkingSpotDetails
           status={detailsStatus}
@@ -131,19 +137,24 @@ export function MyReservationsView({ onNavigate }: { onNavigate: (tab: Tab) => v
       {/* Modals (fixed-position) */}
       <AlertDialog
         open={confirmDelete}
-        title="Usunąć rezerwację?"
-        body="Tej operacji nie można cofnąć."
-        confirmLabel="Usuń"
+        title="Usunąć tę rezerwację?"
+        body="Miejsce zostanie zwolnione i będzie dostępne dla innych kierowców."
+        confirmLabel="Usuń rezerwację"
         cancelLabel="Anuluj"
         onCancel={() => setConfirmDelete(false)}
         onConfirm={() => {
           if (selected) remove(selected.id);
           setConfirmDelete(false);
           setSelectedId(null);
-          setPersonName('');
-          setPlates('');
-          setNote('');
+          clearForm();
+          setDeleteToastOpen(true);
         }}
+      />
+      <Toast
+        open={deleteToastOpen}
+        title="Miejsce zwolnione"
+        body="Twoja rezerwacja została usunięta. Miejsce jest teraz dostępne dla innych."
+        onDismiss={() => setDeleteToastOpen(false)}
       />
     </>
   );
