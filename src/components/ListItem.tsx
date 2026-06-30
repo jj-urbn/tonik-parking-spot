@@ -14,7 +14,7 @@ export function ListItem({ label, trailing, active, onSelect }: Props) {
       {trailing && (
         <span className={active ? 'text-on-accent-muted' : 'text-muted'}>{trailing}</span>
       )}
-      {!active && <span className="absolute bottom-0 left-8 right-8 h-px bg-border" />}
+      {!active && <span className="absolute right-8 bottom-0 left-8 h-px bg-border" />}
     </button>
   );
 }
